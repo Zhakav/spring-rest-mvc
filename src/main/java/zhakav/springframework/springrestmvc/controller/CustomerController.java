@@ -51,4 +51,12 @@ public class CustomerController {
 
     }
 
+    @PutMapping("/{customerId}")
+    private ResponseEntity<Customer> updateById(
+            @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
+
+        return new ResponseEntity<>(customerService.updateById(customer,customerId),HttpStatus.ACCEPTED);
+
+    }
+
 }

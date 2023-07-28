@@ -11,4 +11,5 @@ public interface CustomerService {
      List<Customer> getAll();
      Customer save(Customer customer);
 
+     Customer updateById(Customer customer, UUID id);
 }
