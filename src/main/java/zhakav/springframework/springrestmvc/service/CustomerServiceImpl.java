@@ -2,6 +2,7 @@ package zhakav.springframework.springrestmvc.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.Customer;
 
 import java.time.LocalDateTime;
@@ -94,5 +95,13 @@ public class CustomerServiceImpl implements CustomerService {
         customerMap.put(id,exist);
 
         return exist;
+    }
+
+    @Override
+    public Customer deleteById(UUID id) {
+
+        Customer deletedCustomer = customerMap.remove(id);
+
+        return deletedCustomer;
     }
 }

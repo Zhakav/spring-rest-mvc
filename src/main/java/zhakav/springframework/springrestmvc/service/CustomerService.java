@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.service;
 
+import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.Customer;
 
 import java.util.List;
@@ -10,6 +11,6 @@ public interface CustomerService {
      Customer getById(UUID id);
      List<Customer> getAll();
      Customer save(Customer customer);
-
      Customer updateById(Customer customer, UUID id);
+     Customer deleteById(UUID id);
 }
