@@ -2,11 +2,10 @@ package zhakav.springframework.springrestmvc.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.service.BeerService;
 
@@ -18,7 +17,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/beer")
 public class BeerController {
     private BeerService beerService;
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public List<Beer> getAll(){
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
@@ -26,12 +25,19 @@ public class BeerController {
         return beerService.getAll();
 
     }
-    @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+    @GetMapping(value = "/{beerId}")
     public Beer getByID(@PathVariable("beerId") UUID beerId){
 
         log.debug("GET BEER BY ID -IN BEER CONTROLLER -ID : " + beerId);
 
         return beerService.getByID(beerId);
+
+    }
+
+    @PostMapping
+    public ResponseEntity<Beer> save(@RequestBody Beer beer){
+
+        return new ResponseEntity<>(beerService.save(beer),HttpStatus.CREATED);
 
     }
 }
