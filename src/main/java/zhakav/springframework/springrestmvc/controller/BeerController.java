@@ -2,6 +2,7 @@ package zhakav.springframework.springrestmvc.controller;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,12 @@ public class BeerController {
     @PostMapping
     public ResponseEntity<Beer> save(@RequestBody Beer beer){
 
-        return new ResponseEntity<>(beerService.save(beer),HttpStatus.CREATED);
+        Beer savedBeer=beerService.save(beer);
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.add("Location","/api/v1/beer/" + savedBeer.getId());
+
+        return new ResponseEntity<>(headers,HttpStatus.CREATED);
 
     }
 }

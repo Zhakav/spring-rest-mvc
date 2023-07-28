@@ -92,6 +92,8 @@ public class BeerServiceImpl implements BeerService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        return beerMap.put(savedBeer.getId(),savedBeer);
+        beerMap.put(savedBeer.getId(),savedBeer);
+
+        return savedBeer;
     }
 }
