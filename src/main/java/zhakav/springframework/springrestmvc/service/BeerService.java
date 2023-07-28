@@ -7,6 +7,5 @@ import java.util.UUID;
 
 public interface BeerService {
     List<Beer> getAll();
-
     Beer getByID(UUID id);
 }
