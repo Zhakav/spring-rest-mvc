@@ -120,4 +120,12 @@ public class BeerServiceImpl implements BeerService {
         return exist;
     }
 
+    @Override
+    public Beer deleteById(UUID beerId) {
+
+        Beer deletedBeer = beerMap.remove(beerId);
+
+        return deletedBeer;
+    }
+
 }

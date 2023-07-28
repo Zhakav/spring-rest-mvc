@@ -46,10 +46,18 @@ public class BeerController {
 
     }
     @PutMapping("/{beerId}")
-    private ResponseEntity<Beer> updateById(
+    public ResponseEntity<Beer> updateById(
             @PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
         return new ResponseEntity<>(beerService.updateById(beer,beerId),HttpStatus.ACCEPTED);
 
     }
+    @DeleteMapping("/{beerId}")
+    public ResponseEntity<Beer> deleteById(@PathVariable("beerId") UUID beerId){
+
+        return new ResponseEntity<>(beerService.deleteById(beerId),HttpStatus.NO_CONTENT);
+
+
+    }
+
 }
