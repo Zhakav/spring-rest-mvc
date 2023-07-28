@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import zhakav.springframework.springrestmvc.model.Customer;
 
@@ -7,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
     Map<UUID, Customer> customerMap;
@@ -44,11 +46,19 @@ public class CustomerServiceImpl implements CustomerService {
     }
     @Override
     public Customer getById(UUID id) {
+
+
+        log.debug("GET CUSTOMER BY ID -IN CUSTOMER SERVICE -ID : " + id);
+
+
         return customerMap.get(id);
     }
 
     @Override
     public List<Customer> getAll() {
+
+        log.debug("GET ALL CUSTOMER -IN CUSTOMER SERVICE ");
+
 
         return new ArrayList<>(customerMap.values());
     }
@@ -65,6 +75,9 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
 
         customerMap.put(savedCustomer.getId(),savedCustomer);
+
+        log.debug("SAVE CUSTOMER -IN CUSTOMER CONTROLLER -ID : " + savedCustomer.getId());
+        
 
         return savedCustomer;
     }

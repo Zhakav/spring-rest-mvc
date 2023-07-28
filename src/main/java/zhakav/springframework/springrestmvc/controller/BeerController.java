@@ -34,7 +34,6 @@ public class BeerController {
         return beerService.getByID(beerId);
 
     }
-
     @PostMapping
     public ResponseEntity<Beer> save(@RequestBody Beer beer){
 
@@ -44,6 +43,13 @@ public class BeerController {
         headers.add("Location","/api/v1/beer/" + savedBeer.getId());
 
         return new ResponseEntity<>(headers,HttpStatus.CREATED);
+
+    }
+    @PutMapping("/{beerId}")
+    private ResponseEntity<Beer> updateById(
+            @PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
+
+        return new ResponseEntity<>(beerService.updateById(beer,beerId),HttpStatus.ACCEPTED);
 
     }
 }
