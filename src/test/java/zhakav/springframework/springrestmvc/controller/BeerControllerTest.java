@@ -17,7 +17,9 @@ import zhakav.springframework.springrestmvc.service.BeerServiceImpl;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.math.BigDecimal;
@@ -133,5 +135,38 @@ class BeerControllerTest {
                 .andExpect(header().string("Location",is("/api/v1/beer/"+beers.get(1).getId())))
                 .andExpect(jsonPath("$.id",is(beers.get(1).getId().toString())));
 
+    }
+
+    @Test
+    void updateBeer() throws Exception{
+
+        Beer beer=beers.get(0);
+
+        given(beerService.updateById(beer,beer.getId())).willReturn(beer);
+
+        mockMvc.perform(put("/api/v1/beer/"+beer.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id",is(beer.getId().toString())));
+
+        verify(beerService).updateById(eq(beer),eq(beer.getId()));
+    }
+    @Test
+    void deleteBeer() throws Exception{
+
+        Beer beer=beers.get(0);
+
+        given(beerService.deleteById(beer.getId())).willReturn(beer);
+
+        mockMvc.perform(delete("/api/v1/beer/"+beer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isNoContent())
+                .andExpect(jsonPath("$.id",is(beer.getId().toString())));
+
+        verify(beerService).deleteById(eq(beer.getId()));
     }
 }
