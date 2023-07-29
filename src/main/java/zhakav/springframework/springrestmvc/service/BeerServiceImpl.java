@@ -2,6 +2,7 @@ package zhakav.springframework.springrestmvc.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 
@@ -102,13 +103,35 @@ public class BeerServiceImpl implements BeerService {
 
         Beer exist = beerMap.get(id);
 
+//        if(beer.getBeerName()!=null)
+            exist.setBeerName(beer.getBeerName());
+//        if(beer.getBeerStyle()!=null)
+            exist.setBeerStyle(beer.getBeerStyle());
+//        if(beer.getPrice()!=null)
+            exist.setPrice(beer.getPrice());
+//        if(beer.getUpc()!=null)
+            exist.setUpc(beer.getUpc());
+//        if(beer.getQuantityOnHand()!=null)
+            exist.setQuantityOnHand(beer.getQuantityOnHand());
+
+        exist.setUpdateDate(LocalDateTime.now());
+
+        beerMap.put(id,exist);
+
+        return exist;
+    }
+    @Override
+    public Beer patchById(Beer beer, UUID id) {
+
+        Beer exist = beerMap.get(id);
+
         if(beer.getBeerName()!=null)
             exist.setBeerName(beer.getBeerName());
         if(beer.getBeerStyle()!=null)
             exist.setBeerStyle(beer.getBeerStyle());
         if(beer.getPrice()!=null)
             exist.setPrice(beer.getPrice());
-        if(beer.getUpc()!=null)
+        if(StringUtils.hasText(beer.getUpc()))
             exist.setUpc(beer.getUpc());
         if(beer.getQuantityOnHand()!=null)
             exist.setQuantityOnHand(beer.getQuantityOnHand());
@@ -119,7 +142,6 @@ public class BeerServiceImpl implements BeerService {
 
         return exist;
     }
-
     @Override
     public Beer deleteById(UUID beerId) {
 

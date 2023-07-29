@@ -10,5 +10,6 @@ public interface BeerService {
     Beer getByID(UUID id);
     Beer save(Beer beer);
     Beer updateById(Beer beer , UUID id);
+    Beer patchById(Beer beer , UUID id);
     Beer deleteById(UUID beerId);
 }
