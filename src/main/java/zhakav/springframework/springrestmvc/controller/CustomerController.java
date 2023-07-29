@@ -16,11 +16,12 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/customer")
 public class CustomerController {
 
+    public static final String PATH= "/api/v1/customer";
+    public static final String PATH_ID= PATH +"/customerId" ;
     private CustomerService customerService;
-    @GetMapping
+    @GetMapping(PATH)
     public List<Customer> getAll(){
 
         log.debug("GET ALL CUSTOMER -IN CUSTOMER CONTROLLER ");
@@ -28,7 +29,7 @@ public class CustomerController {
         return customerService.getAll();
 
     }
-    @GetMapping(value = "/{customerId}")
+    @GetMapping(PATH_ID)
     public Customer getById(@PathVariable("customerId") UUID customerId){
 
         log.debug("GET CUSTOMER BY ID -IN CUSTOMER CONTROLLER -ID : " + customerId);
@@ -37,7 +38,7 @@ public class CustomerController {
 
     }
 
-    @PostMapping
+    @PostMapping(PATH)
     public ResponseEntity<Beer> save(@RequestBody Customer customer){
 
         Customer savedCustomer=customerService.save(customer);
@@ -51,21 +52,21 @@ public class CustomerController {
 
     }
 
-    @PutMapping("/{customerId}")
+    @PutMapping(PATH_ID)
     private ResponseEntity<Customer> updateById(
             @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
 
         return new ResponseEntity<>(customerService.updateById(customer,customerId),HttpStatus.ACCEPTED);
 
     }
-    @PatchMapping("/{customerId}")
+    @PatchMapping(PATH_ID)
     private ResponseEntity<Customer> patchById(
             @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
 
         return new ResponseEntity<>(customerService.patchById(customer,customerId),HttpStatus.ACCEPTED);
 
     }
-    @DeleteMapping("/{customerId}")
+    @DeleteMapping(PATH_ID)
     public ResponseEntity<Customer> deleteById(@PathVariable("customerId") UUID customerId){
 
         return new ResponseEntity<>(customerService.deleteById(customerId),HttpStatus.NO_CONTENT);
