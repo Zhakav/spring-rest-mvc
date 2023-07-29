@@ -58,6 +58,13 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.updateById(customer,customerId),HttpStatus.ACCEPTED);
 
     }
+    @PatchMapping("/{customerId}")
+    private ResponseEntity<Customer> patchById(
+            @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
+
+        return new ResponseEntity<>(customerService.patchById(customer,customerId),HttpStatus.ACCEPTED);
+
+    }
     @DeleteMapping("/{customerId}")
     public ResponseEntity<Customer> deleteById(@PathVariable("customerId") UUID customerId){
 

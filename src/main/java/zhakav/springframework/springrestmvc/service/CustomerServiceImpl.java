@@ -87,6 +87,20 @@ public class CustomerServiceImpl implements CustomerService {
 
         Customer exist = customerMap.get(id);
 
+        //if(customer.getName()!=null)
+            exist.setName(customer.getName());
+
+        exist.setUpdateDate(LocalDateTime.now());
+
+        customerMap.put(id,exist);
+
+        return exist;
+    }
+    @Override
+    public Customer patchById(Customer customer, UUID id) {
+
+        Customer exist = customerMap.get(id);
+
         if(customer.getName()!=null)
             exist.setName(customer.getName());
 
@@ -96,7 +110,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         return exist;
     }
-
     @Override
     public Customer deleteById(UUID id) {
 

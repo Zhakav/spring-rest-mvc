@@ -1,6 +1,7 @@
 package zhakav.springframework.springrestmvc.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,10 @@ import java.util.List;
 import java.util.UUID;
 @Slf4j
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/beer")
 public class BeerController {
-    private BeerService beerService;
+    private final BeerService beerService;
     @GetMapping
     public List<Beer> getAll(){
 
