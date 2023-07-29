@@ -1,5 +1,7 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ class BeerControllerTest {
     MockMvc mockMvc;
     @MockBean
     BeerService beerService;
+    @Autowired
+    ObjectMapper objectMapper;
     List<Beer> beers;
     @BeforeEach
     void setup(){
@@ -107,6 +111,27 @@ class BeerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()",is(3)));
 
+
+    }
+
+    @Test
+    void createNewBeer() throws Exception {
+
+        Beer newBeer=beers.get(0);
+
+        newBeer.setId(null);
+        newBeer.setVersion(null);
+
+        given(beerService.save(any(Beer.class))).willReturn(beers.get(1));
+
+        mockMvc.perform(post("/api/v1/beer")
+                .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(newBeer)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andExpect(header().string("Location",is("/api/v1/beer/"+beers.get(1).getId())))
+                .andExpect(jsonPath("$.id",is(beers.get(1).getId().toString())));
 
     }
 }
