@@ -94,7 +94,7 @@ class BeerControllerTest {
 
         given(beerService.getByID(beerTest.getId())).willReturn(beerTest);
 
-        mockMvc.perform(get(BeerController.PATH + beerTest.getId())
+        mockMvc.perform(get(BeerController.PATH_ID, beerTest.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -144,7 +144,7 @@ class BeerControllerTest {
 
         given(beerService.updateById(beer,beer.getId())).willReturn(beer);
 
-        mockMvc.perform(put(BeerController.PATH+beer.getId())
+        mockMvc.perform(put(BeerController.PATH_ID,beer.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(beer)))
@@ -160,7 +160,7 @@ class BeerControllerTest {
 
         given(beerService.deleteById(beer.getId())).willReturn(beer);
 
-        mockMvc.perform(delete(BeerController.PATH+beer.getId())
+        mockMvc.perform(delete(BeerController.PATH_ID,beer.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beer)))
@@ -170,19 +170,26 @@ class BeerControllerTest {
         verify(beerService).deleteById(eq(beer.getId()));
     }
 
-//    @Test
-//    void patchBeer() throws Exception{
-//
-//        Beer beer = beers.get(0);
-//
-//        Map<String, Object> beerMap = new HashMap<>();
-//        beerMap.put("beerName", "New Name");
-//
-//        mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(beerMap)))
-//                .andExpect(status().isAccepted());
-//        verify(beerService).patchById(eq(beer),eq(beer.getId()));
-//    }
+    @Test
+    void patchBeer() throws Exception{
+
+        Beer beer = beers.get(0);
+        beer.setBeerName("New Name");
+
+        Beer requestBody=Beer.builder()
+                .beerName("New Name")
+                .build();
+
+        given(beerService.patchById(any(Beer.class),eq(beer.getId()))).willReturn(beer);
+
+        mockMvc.perform(patch(BeerController.PATH_ID,beer.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id",is(beer.getId().toString())))
+                .andExpect(jsonPath("$.beerName",is(requestBody.getBeerName())));
+
+        verify(beerService).patchById(eq(requestBody),eq(beer.getId()));
+    }
 }

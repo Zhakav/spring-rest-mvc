@@ -21,7 +21,7 @@ public class BeerController {
 
     public static final String PATH= "/api/v1/beer";
     public static final String PATH_ID= PATH + "/{beerId}";
-    @GetMapping
+    @GetMapping(PATH)
     public List<Beer> getAll(){
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
