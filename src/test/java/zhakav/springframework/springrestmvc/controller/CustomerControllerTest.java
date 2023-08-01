@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.model.Customer;
@@ -154,6 +155,15 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.id",is(customer.getId().toString())));
 
         verify(customerService).deleteById(eq(customer.getId()));
+    }
+    @Test
+    void getByIdNotFound() throws Exception {
+
+        given(customerService.getById(any(UUID.class))).willThrow(new NotFoundException());
+
+        mockMvc.perform(get(CustomerController.PATH_ID,UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+
     }
     @Test
     void patchCustomer() throws Exception{
