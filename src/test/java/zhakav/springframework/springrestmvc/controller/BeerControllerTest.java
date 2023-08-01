@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.service.BeerService;
@@ -20,6 +21,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.math.BigDecimal;
@@ -86,6 +88,16 @@ class BeerControllerTest {
         beerMap.put(beer3.getId(),beer3);
 
         beers=new ArrayList<>(beerMap.values());
+    }
+
+    @Test
+    void getByIdNotFound() throws Exception {
+
+        given(beerService.getByID(any(UUID.class))).willThrow(new NotFoundException());
+
+        mockMvc.perform(get(BeerController.PATH_ID,UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+
     }
     @Test
     void getByID() throws Exception {
