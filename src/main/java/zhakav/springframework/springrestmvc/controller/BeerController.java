@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.service.BeerService;
 
@@ -35,6 +36,14 @@ public class BeerController {
         log.debug("GET BEER BY ID -IN BEER CONTROLLER -ID : " + beerId);
 
         return beerService.getByID(beerId);
+
+    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity handleNotFound(){
+
+        log.debug("IN BEER CONTROLLER -NOT FOUND EXCEPTION HANDLER");
+
+        return ResponseEntity.notFound().build();
 
     }
     @PostMapping(PATH)
