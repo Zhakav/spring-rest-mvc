@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 
 @Slf4j
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionController {
-    @ExceptionHandler(NotFoundException.class)
+//    @ExceptionHandler(NotFoundException.class)
     public ResponseEntity handleNotFound(){
 
         log.debug("IN Exception CONTROLLER -NOT FOUND EXCEPTION HANDLER");
