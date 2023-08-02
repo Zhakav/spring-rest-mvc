@@ -6,11 +6,15 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.test.annotation.Rollback;
+import zhakav.springframework.springrestmvc.entity.Beer;
+import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,6 +26,31 @@ class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Test
+    public void getByIdNotFound(){
+
+        assertThrows(NotFoundException.class,()->{
+
+            beerController.getByID(UUID.randomUUID());
+
+        });
+
+    }
+    @Test
+    public void getById(){
+
+        Beer beer=beerRepository.findAll().get(0);
+
+        BeerDTO beerDTO=beerController.getByID(beer.getId());
+
+        assertThat(beerDTO).isNotNull();
+        assertThat(beerDTO.getBeerName()).isEqualTo(beer.getBeerName());
+        assertThat(beerDTO.getId()).isEqualTo(beer.getId());
+        assertThat(beerDTO.getPrice()).isEqualTo(beer.getPrice());
+
+
+    }
 
     @Test
     public void listBeers(){
