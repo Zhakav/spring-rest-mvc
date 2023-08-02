@@ -1,8 +1,6 @@
 package zhakav.springframework.springrestmvc.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +14,10 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "customer_id" , length =36 ,
+            columnDefinition = "varchar" ,
+            nullable = false ,updatable = false)
     private UUID id;
     private String name;
     @Version
