@@ -11,6 +11,7 @@ import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.service.BeerService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Slf4j
 @RestController
@@ -51,7 +52,9 @@ public class BeerController {
     public ResponseEntity<BeerDTO> updateById(
             @PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer){
 
-        return new ResponseEntity<>(beerService.updateById(beer,beerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
+        Optional<BeerDTO> response=beerService.updateById(beer,beerId);
+
+        return new ResponseEntity<>(response.get(),HttpStatus.ACCEPTED);
 
     }
     @PatchMapping(PATH_ID)
