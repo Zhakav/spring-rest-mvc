@@ -93,7 +93,7 @@ class BeerControllerTest {
     @Test
     void getByIdNotFound() throws Exception {
 
-        given(beerService.getByID(any(UUID.class))).willThrow(new NotFoundException());
+        given(beerService.getByID(any(UUID.class))).willReturn(Optional.empty());
 
         mockMvc.perform(get(BeerController.PATH_ID,UUID.randomUUID()))
                 .andExpect(status().isNotFound());
@@ -104,7 +104,7 @@ class BeerControllerTest {
 
         Beer beerTest=beers.get(0);
 
-        given(beerService.getByID(beerTest.getId())).willReturn(beerTest);
+        given(beerService.getByID(beerTest.getId())).willReturn(Optional.of(beerTest));
 
         mockMvc.perform(get(BeerController.PATH_ID, beerTest.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -154,7 +154,7 @@ class BeerControllerTest {
 
         Beer beer=beers.get(0);
 
-        given(beerService.updateById(beer,beer.getId())).willReturn(beer);
+        given(beerService.updateById(beer,beer.getId())).willReturn(Optional.of(beer));
 
         mockMvc.perform(put(BeerController.PATH_ID,beer.getId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -170,7 +170,7 @@ class BeerControllerTest {
 
         Beer beer=beers.get(0);
 
-        given(beerService.deleteById(beer.getId())).willReturn(beer);
+        given(beerService.deleteById(beer.getId())).willReturn(Optional.of(beer));
 
         mockMvc.perform(delete(BeerController.PATH_ID,beer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -192,7 +192,7 @@ class BeerControllerTest {
                 .beerName("New Name")
                 .build();
 
-        given(beerService.patchById(any(Beer.class),eq(beer.getId()))).willReturn(beer);
+        given(beerService.patchById(any(Beer.class),eq(beer.getId()))).willReturn(Optional.of(beer));
 
         mockMvc.perform(patch(BeerController.PATH_ID,beer.getId())
                         .contentType(MediaType.APPLICATION_JSON)

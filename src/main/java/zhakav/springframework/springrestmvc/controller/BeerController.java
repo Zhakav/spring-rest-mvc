@@ -35,7 +35,7 @@ public class BeerController {
 
         log.debug("GET BEER BY ID -IN BEER CONTROLLER -ID : " + beerId);
 
-        return beerService.getByID(beerId);
+        return beerService.getByID(beerId).orElseThrow(NotFoundException::new);
 
     }
     @PostMapping(PATH)
@@ -53,20 +53,20 @@ public class BeerController {
     public ResponseEntity<Beer> updateById(
             @PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
-        return new ResponseEntity<>(beerService.updateById(beer,beerId),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(beerService.updateById(beer,beerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
 
     }
     @PatchMapping(PATH_ID)
     public ResponseEntity<Beer> patchById(
             @PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
-        return new ResponseEntity<>(beerService.patchById(beer,beerId),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(beerService.patchById(beer,beerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
 
     }
     @DeleteMapping(PATH_ID)
     public ResponseEntity<Beer> deleteById(@PathVariable("beerId") UUID beerId){
 
-        return new ResponseEntity<>(beerService.deleteById(beerId),HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(beerService.deleteById(beerId).orElseThrow(NotFoundException::new),HttpStatus.NO_CONTENT);
 
 
     }

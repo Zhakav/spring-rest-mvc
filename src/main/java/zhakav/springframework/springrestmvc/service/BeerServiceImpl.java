@@ -71,11 +71,13 @@ public class BeerServiceImpl implements BeerService {
 
     }
     @Override
-    public Beer getByID(UUID id) {
+    public Optional<Beer> getByID(UUID id) {
 
         log.debug("GET BEER BY ID -IN BEER SERVICE -ID : " + id);
 
-        return beerMap.get(id);
+        Beer beer=beerMap.get(id);
+
+        return Optional.of(beer);
     }
 
     @Override
@@ -99,7 +101,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public Beer updateById(Beer beer, UUID id) {
+    public Optional<Beer> updateById(Beer beer, UUID id) {
 
         Beer exist = beerMap.get(id);
 
@@ -118,10 +120,10 @@ public class BeerServiceImpl implements BeerService {
 
         beerMap.put(id,exist);
 
-        return exist;
+        return Optional.of(exist);
     }
     @Override
-    public Beer patchById(Beer beer, UUID id) {
+    public Optional<Beer> patchById(Beer beer, UUID id) {
 
         Beer exist = beerMap.get(id);
 
@@ -140,14 +142,14 @@ public class BeerServiceImpl implements BeerService {
 
         beerMap.put(id,exist);
 
-        return exist;
+        return Optional.of(exist);
     }
     @Override
-    public Beer deleteById(UUID beerId) {
+    public Optional<Beer> deleteById(UUID beerId) {
 
         Beer deletedBeer = beerMap.remove(beerId);
 
-        return deletedBeer;
+        return Optional.of(deletedBeer);
     }
 
 }
