@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
+import zhakav.springframework.springrestmvc.mapper.BeerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
@@ -29,6 +30,29 @@ class BeerControllerIT {
 
     @Autowired
     BeerRepository beerRepository;
+
+    @Autowired
+    BeerMapper beerMapper;
+    @Test
+    @Rollback
+    @Transactional
+    public void update(){
+
+        Beer beer= beerRepository.findAll().get(0);
+        BeerDTO beerDTO=beerMapper.beerToBeerDTO(beer);
+
+        beerDTO.setId(null);
+        beerDTO.setVersion(null);
+
+        final String beerName="Updated Beer";
+
+        beerDTO.setBeerName(beerName);
+
+        ResponseEntity response=beerController.updateById(beer.getId(),beerDTO);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+        assertThat(((BeerDTO)response.getBody()).getBeerName()).isEqualTo(beerName);
+
+    }
 
     @Test
     @Rollback
