@@ -38,14 +38,6 @@ public class BeerController {
         return beerService.getByID(beerId);
 
     }
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFound(){
-
-        log.debug("IN BEER CONTROLLER -NOT FOUND EXCEPTION HANDLER");
-
-        return ResponseEntity.notFound().build();
-
-    }
     @PostMapping(PATH)
     public ResponseEntity<Beer> save(@RequestBody Beer beer){
 
