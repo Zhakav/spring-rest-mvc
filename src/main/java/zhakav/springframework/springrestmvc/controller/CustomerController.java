@@ -20,7 +20,7 @@ import java.util.UUID;
 public class CustomerController {
 
     public static final String PATH= "/api/v1/customer";
-    public static final String PATH_ID= PATH +"/${customerId}" ;
+    public static final String PATH_ID= PATH +"/{customerId}" ;
     private CustomerService customerService;
     @GetMapping(PATH)
     public List<Customer> getAll(){
