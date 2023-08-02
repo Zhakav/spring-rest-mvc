@@ -2,7 +2,7 @@ package zhakav.springframework.springrestmvc.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import zhakav.springframework.springrestmvc.model.Customer;
+import zhakav.springframework.springrestmvc.model.CustomerDTO;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -11,10 +11,10 @@ import java.util.*;
 @Slf4j
 public class CustomerServiceImpl implements CustomerService {
 
-    Map<UUID, Customer> customerMap;
+    Map<UUID, CustomerDTO> customerMap;
     CustomerServiceImpl(){
 
-        Customer customer1 = Customer.builder()
+        CustomerDTO customer1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 1")
                 .version(1)
@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Customer customer2 = Customer.builder()
+        CustomerDTO customer2 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 2")
                 .version(1)
@@ -30,7 +30,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Customer customer3 = Customer.builder()
+        CustomerDTO customer3 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 3")
                 .version(1)
@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
     @Override
-    public Optional<Customer> getById(UUID id) {
+    public Optional<CustomerDTO> getById(UUID id) {
 
 
         log.debug("GET CUSTOMER BY ID -IN CUSTOMER SERVICE -ID : " + id);
@@ -55,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Customer> getAll() {
+    public List<CustomerDTO> getAll() {
 
         log.debug("GET ALL CUSTOMER -IN CUSTOMER SERVICE ");
 
@@ -64,9 +64,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer save(Customer customer) {
+    public CustomerDTO save(CustomerDTO customer) {
 
-        Customer savedCustomer=Customer.builder()
+        CustomerDTO savedCustomer= CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name(customer.getName())
                 .version(1)
@@ -82,9 +82,9 @@ public class CustomerServiceImpl implements CustomerService {
         return savedCustomer;
     }
     @Override
-    public Optional<Customer> updateById(Customer customer, UUID id) {
+    public Optional<CustomerDTO> updateById(CustomerDTO customer, UUID id) {
 
-        Customer exist = customerMap.get(id);
+        CustomerDTO exist = customerMap.get(id);
 
         //if(customer.getName()!=null)
             exist.setName(customer.getName());
@@ -96,9 +96,9 @@ public class CustomerServiceImpl implements CustomerService {
         return Optional.of(exist);
     }
     @Override
-    public Optional<Customer> patchById(Customer customer, UUID id) {
+    public Optional<CustomerDTO> patchById(CustomerDTO customer, UUID id) {
 
-        Customer exist = customerMap.get(id);
+        CustomerDTO exist = customerMap.get(id);
 
         if(customer.getName()!=null)
             exist.setName(customer.getName());
@@ -110,9 +110,9 @@ public class CustomerServiceImpl implements CustomerService {
         return Optional.of(exist);
     }
     @Override
-    public Optional<Customer> deleteById(UUID id) {
+    public Optional<CustomerDTO> deleteById(UUID id) {
 
-        Customer deletedCustomer = customerMap.remove(id);
+        CustomerDTO deletedCustomer = customerMap.remove(id);
 
         return Optional.of(deletedCustomer);
     }

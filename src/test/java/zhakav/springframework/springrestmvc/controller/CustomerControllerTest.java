@@ -8,19 +8,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import zhakav.springframework.springrestmvc.exception.NotFoundException;
-import zhakav.springframework.springrestmvc.model.Beer;
-import zhakav.springframework.springrestmvc.model.BeerStyle;
-import zhakav.springframework.springrestmvc.model.Customer;
-import zhakav.springframework.springrestmvc.service.BeerService;
+import zhakav.springframework.springrestmvc.model.CustomerDTO;
 import zhakav.springframework.springrestmvc.service.CustomerService;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -37,13 +31,13 @@ class CustomerControllerTest {
     CustomerService customerService;
     @Autowired
     ObjectMapper objectMapper;
-    List<Customer> customers;
+    List<CustomerDTO> customers;
     @BeforeEach
     void setup(){
 
-        Map<UUID,Customer> customerMap=new HashMap<>();
+        Map<UUID, CustomerDTO> customerMap=new HashMap<>();
 
-        Customer customer1 = Customer.builder()
+        CustomerDTO customer1 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 1")
                 .version(1)
@@ -51,7 +45,7 @@ class CustomerControllerTest {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Customer customer2 = Customer.builder()
+        CustomerDTO customer2 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 2")
                 .version(1)
@@ -59,7 +53,7 @@ class CustomerControllerTest {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Customer customer3 = Customer.builder()
+        CustomerDTO customer3 = CustomerDTO.builder()
                 .id(UUID.randomUUID())
                 .name("Customer 3")
                 .version(1)
@@ -77,7 +71,7 @@ class CustomerControllerTest {
     @Test
     void getByID() throws Exception {
 
-        Customer customerTest=customers.get(0);
+        CustomerDTO customerTest=customers.get(0);
 
         given(customerService.getById(customerTest.getId())).willReturn(Optional.of(customerTest));
 
@@ -106,11 +100,11 @@ class CustomerControllerTest {
     @Test
     void createCustomer() throws Exception {
 
-        Customer customer=customers.get(0);
-        Customer returnedCustomer=customers.get(1);
+        CustomerDTO customer=customers.get(0);
+        CustomerDTO returnedCustomer=customers.get(1);
         customer.setId(null);
 
-        given(customerService.save(any(Customer.class))).willReturn(returnedCustomer);
+        given(customerService.save(any(CustomerDTO.class))).willReturn(returnedCustomer);
 
         mockMvc.perform(post(CustomerController.PATH)
                         .accept(MediaType.APPLICATION_JSON)
@@ -126,7 +120,7 @@ class CustomerControllerTest {
     @Test
     void updateCustomer() throws Exception{
 
-        Customer customer=customers.get(0);
+        CustomerDTO customer=customers.get(0);
 
         given(customerService.updateById(customer,customer.getId())).willReturn(Optional.of(customer));
 
@@ -142,7 +136,7 @@ class CustomerControllerTest {
     @Test
     void deleteCustomer() throws Exception{
 
-        Customer customer=customers.get(0);
+        CustomerDTO customer=customers.get(0);
 
 
         given(customerService.deleteById(customer.getId())).willReturn(Optional.of(customer));
@@ -168,14 +162,14 @@ class CustomerControllerTest {
     @Test
     void patchCustomer() throws Exception{
 
-        Customer customer=customers.get(0);
+        CustomerDTO customer=customers.get(0);
         customer.setName("New Name");
 
-        Customer requestBody=Customer.builder()
+        CustomerDTO requestBody= CustomerDTO.builder()
                 .name("New Name")
                 .build();
 
-        given(customerService.patchById(any(Customer.class),eq(customer.getId()))).willReturn(Optional.of(customer));
+        given(customerService.patchById(any(CustomerDTO.class),eq(customer.getId()))).willReturn(Optional.of(customer));
 
         mockMvc.perform(patch(CustomerController.PATH_ID,customer.getId())
                         .contentType(MediaType.APPLICATION_JSON)

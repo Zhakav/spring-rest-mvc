@@ -1,34 +1,28 @@
 package zhakav.springframework.springrestmvc.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import zhakav.springframework.springrestmvc.exception.NotFoundException;
-import zhakav.springframework.springrestmvc.model.Beer;
+import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.service.BeerService;
-import zhakav.springframework.springrestmvc.service.BeerServiceImpl;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(BeerController.class)
@@ -40,14 +34,14 @@ class BeerControllerTest {
     BeerService beerService;
     @Autowired
     ObjectMapper objectMapper;
-    List<Beer> beers;
+    List<BeerDTO> beers;
     @BeforeEach
     void setup(){
 
-        Map<UUID,Beer>beerMap=new HashMap<>();
+        Map<UUID, BeerDTO>beerMap=new HashMap<>();
 
 
-        Beer beer1 = Beer.builder()
+        BeerDTO beer1 = BeerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beerName("Galaxy Cat")
@@ -59,7 +53,7 @@ class BeerControllerTest {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Beer beer2 = Beer.builder()
+        BeerDTO beer2 = BeerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beerName("Crank")
@@ -71,7 +65,7 @@ class BeerControllerTest {
                 .updateDate(LocalDateTime.now())
                 .build();
 
-        Beer beer3 = Beer.builder()
+        BeerDTO beer3 = BeerDTO.builder()
                 .id(UUID.randomUUID())
                 .version(1)
                 .beerName("Sunshine City")
@@ -102,7 +96,7 @@ class BeerControllerTest {
     @Test
     void getByID() throws Exception {
 
-        Beer beerTest=beers.get(0);
+        BeerDTO beerTest=beers.get(0);
 
         given(beerService.getByID(beerTest.getId())).willReturn(Optional.of(beerTest));
 
@@ -131,12 +125,12 @@ class BeerControllerTest {
     @Test
     void createNewBeer() throws Exception {
 
-        Beer newBeer=beers.get(0);
+        BeerDTO newBeer=beers.get(0);
 
         newBeer.setId(null);
         newBeer.setVersion(null);
 
-        given(beerService.save(any(Beer.class))).willReturn(beers.get(1));
+        given(beerService.save(any(BeerDTO.class))).willReturn(beers.get(1));
 
         mockMvc.perform(post(BeerController.PATH)
                 .accept(MediaType.APPLICATION_JSON)
@@ -152,7 +146,7 @@ class BeerControllerTest {
     @Test
     void updateBeer() throws Exception{
 
-        Beer beer=beers.get(0);
+        BeerDTO beer=beers.get(0);
 
         given(beerService.updateById(beer,beer.getId())).willReturn(Optional.of(beer));
 
@@ -168,7 +162,7 @@ class BeerControllerTest {
     @Test
     void deleteBeer() throws Exception{
 
-        Beer beer=beers.get(0);
+        BeerDTO beer=beers.get(0);
 
         given(beerService.deleteById(beer.getId())).willReturn(Optional.of(beer));
 
@@ -185,14 +179,14 @@ class BeerControllerTest {
     @Test
     void patchBeer() throws Exception{
 
-        Beer beer = beers.get(0);
+        BeerDTO beer = beers.get(0);
         beer.setBeerName("New Name");
 
-        Beer requestBody=Beer.builder()
+        BeerDTO requestBody= BeerDTO.builder()
                 .beerName("New Name")
                 .build();
 
-        given(beerService.patchById(any(Beer.class),eq(beer.getId()))).willReturn(Optional.of(beer));
+        given(beerService.patchById(any(BeerDTO.class),eq(beer.getId()))).willReturn(Optional.of(beer));
 
         mockMvc.perform(patch(BeerController.PATH_ID,beer.getId())
                         .contentType(MediaType.APPLICATION_JSON)

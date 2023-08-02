@@ -1,16 +1,16 @@
 package zhakav.springframework.springrestmvc.service;
 
-import zhakav.springframework.springrestmvc.model.Beer;
+import zhakav.springframework.springrestmvc.model.BeerDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BeerService {
-    List<Beer> getAll();
-    Optional<Beer> getByID(UUID id);
-    Beer save(Beer beer);
-    Optional<Beer> updateById(Beer beer , UUID id);
-    Optional<Beer> patchById(Beer beer , UUID id);
-    Optional<Beer> deleteById(UUID beerId);
+    List<BeerDTO> getAll();
+    Optional<BeerDTO> getByID(UUID id);
+    BeerDTO save(BeerDTO beer);
+    Optional<BeerDTO> updateById(BeerDTO beer , UUID id);
+    Optional<BeerDTO> patchById(BeerDTO beer , UUID id);
+    Optional<BeerDTO> deleteById(UUID beerId);
 }
