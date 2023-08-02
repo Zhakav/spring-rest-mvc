@@ -3,10 +3,12 @@ package zhakav.springframework.springrestmvc.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.mapper.BeerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,7 +47,20 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public Optional<BeerDTO> updateById(BeerDTO beer, UUID id) {
-        return Optional.empty();
+
+        beerRepository.findById(id).ifPresent(foundBeer->{
+
+         foundBeer.setBeerName(beer.getBeerName());
+         foundBeer.setBeerStyle(beer.getBeerStyle());
+         foundBeer.setUpc(beer.getUpc());
+         foundBeer.setPrice(beer.getPrice());
+         foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+         foundBeer.setUpdateDate(LocalDateTime.now());
+
+         beerRepository.save(foundBeer);
+        });
+
+        return Optional.ofNullable(beerMapper.beerToBeerDTO(beerRepository.findById(id).get()));
     }
 
     @Override
