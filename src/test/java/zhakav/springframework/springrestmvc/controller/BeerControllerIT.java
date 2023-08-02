@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.transaction.Transactional;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
@@ -27,6 +30,22 @@ class BeerControllerIT {
     @Autowired
     BeerRepository beerRepository;
 
+    @Test
+    public void save(){
+
+        BeerDTO beerDTO=BeerDTO.builder()
+                .beerName("Silver Wolf")
+                .build();
+
+        ResponseEntity response=beerController.save(beerDTO);
+        BeerDTO beerResponse= (BeerDTO) response.getBody();
+        Beer beer=beerRepository.findById(beerResponse.getId()).get();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getHeaders().getLocation()).isNotNull();
+        assertThat(beer).isNotNull();
+
+    }
     @Test
     public void getByIdNotFound(){
 
