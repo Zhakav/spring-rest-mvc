@@ -79,7 +79,7 @@ class CustomerControllerTest {
 
         Customer customerTest=customers.get(0);
 
-        given(customerService.getById(customerTest.getId())).willReturn(customerTest);
+        given(customerService.getById(customerTest.getId())).willReturn(Optional.of(customerTest));
 
         mockMvc.perform(get(CustomerController.PATH_ID, customerTest.getId())
                         .accept(MediaType.APPLICATION_JSON))
@@ -128,7 +128,7 @@ class CustomerControllerTest {
 
         Customer customer=customers.get(0);
 
-        given(customerService.updateById(customer,customer.getId())).willReturn(customer);
+        given(customerService.updateById(customer,customer.getId())).willReturn(Optional.of(customer));
 
         mockMvc.perform(put(CustomerController.PATH_ID,customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -145,7 +145,7 @@ class CustomerControllerTest {
         Customer customer=customers.get(0);
 
 
-        given(customerService.deleteById(customer.getId())).willReturn(customer);
+        given(customerService.deleteById(customer.getId())).willReturn(Optional.of(customer));
 
         mockMvc.perform(delete(CustomerController.PATH_ID,customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -159,7 +159,7 @@ class CustomerControllerTest {
     @Test
     void getByIdNotFound() throws Exception {
 
-        given(customerService.getById(any(UUID.class))).willThrow(new NotFoundException());
+        given(customerService.getById(any(UUID.class))).willReturn(Optional.empty());
 
         mockMvc.perform(get(CustomerController.PATH_ID,UUID.randomUUID()))
                 .andExpect(status().isNotFound());
@@ -175,7 +175,7 @@ class CustomerControllerTest {
                 .name("New Name")
                 .build();
 
-        given(customerService.patchById(any(Customer.class),eq(customer.getId()))).willReturn(customer);
+        given(customerService.patchById(any(Customer.class),eq(customer.getId()))).willReturn(Optional.of(customer));
 
         mockMvc.perform(patch(CustomerController.PATH_ID,customer.getId())
                         .contentType(MediaType.APPLICATION_JSON)

@@ -2,7 +2,6 @@ package zhakav.springframework.springrestmvc.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.Customer;
 
 import java.time.LocalDateTime;
@@ -46,13 +45,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
     @Override
-    public Customer getById(UUID id) {
+    public Optional<Customer> getById(UUID id) {
 
 
         log.debug("GET CUSTOMER BY ID -IN CUSTOMER SERVICE -ID : " + id);
 
 
-        return customerMap.get(id);
+        return Optional.of(customerMap.get(id));
     }
 
     @Override
@@ -83,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
         return savedCustomer;
     }
     @Override
-    public Customer updateById(Customer customer, UUID id) {
+    public Optional<Customer> updateById(Customer customer, UUID id) {
 
         Customer exist = customerMap.get(id);
 
@@ -94,10 +93,10 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerMap.put(id,exist);
 
-        return exist;
+        return Optional.of(exist);
     }
     @Override
-    public Customer patchById(Customer customer, UUID id) {
+    public Optional<Customer> patchById(Customer customer, UUID id) {
 
         Customer exist = customerMap.get(id);
 
@@ -108,13 +107,13 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerMap.put(id,exist);
 
-        return exist;
+        return Optional.of(exist);
     }
     @Override
-    public Customer deleteById(UUID id) {
+    public Optional<Customer> deleteById(UUID id) {
 
         Customer deletedCustomer = customerMap.remove(id);
 
-        return deletedCustomer;
+        return Optional.of(deletedCustomer);
     }
 }

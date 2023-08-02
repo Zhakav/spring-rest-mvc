@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.Customer;
 import zhakav.springframework.springrestmvc.service.BeerService;
@@ -34,7 +35,7 @@ public class CustomerController {
 
         log.debug("GET CUSTOMER BY ID -IN CUSTOMER CONTROLLER -ID : " + customerId);
 
-        return customerService.getById(customerId);
+        return customerService.getById(customerId).orElseThrow(NotFoundException::new);
 
     }
 
@@ -56,20 +57,20 @@ public class CustomerController {
     private ResponseEntity<Customer> updateById(
             @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
 
-        return new ResponseEntity<>(customerService.updateById(customer,customerId),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.updateById(customer,customerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
 
     }
     @PatchMapping(PATH_ID)
     private ResponseEntity<Customer> patchById(
             @PathVariable("customerId") UUID customerId, @RequestBody Customer customer){
 
-        return new ResponseEntity<>(customerService.patchById(customer,customerId),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(customerService.patchById(customer,customerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
 
     }
     @DeleteMapping(PATH_ID)
     public ResponseEntity<Customer> deleteById(@PathVariable("customerId") UUID customerId){
 
-        return new ResponseEntity<>(customerService.deleteById(customerId),HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(customerService.deleteById(customerId).orElseThrow(NotFoundException::new),HttpStatus.NO_CONTENT);
 
 
     }

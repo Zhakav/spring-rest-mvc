@@ -4,14 +4,15 @@ import zhakav.springframework.springrestmvc.model.Beer;
 import zhakav.springframework.springrestmvc.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CustomerService {
 
-     Customer getById(UUID id);
+    Optional<Customer> getById(UUID id);
      List<Customer> getAll();
      Customer save(Customer customer);
-     Customer updateById(Customer customer, UUID id);
-     Customer patchById(Customer customer, UUID id);
-     Customer deleteById(UUID id);
+     Optional<Customer> updateById(Customer customer, UUID id);
+     Optional<Customer> patchById(Customer customer, UUID id);
+     Optional<Customer> deleteById(UUID id);
 }
