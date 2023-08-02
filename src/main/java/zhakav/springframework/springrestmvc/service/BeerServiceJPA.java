@@ -77,6 +77,13 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public Optional<BeerDTO> deleteById(UUID beerId) {
-        return Optional.empty();
+
+        Optional<BeerDTO> beerDTO= Optional.ofNullable(beerMapper.beerToBeerDTO(beerRepository.findById(beerId).orElseThrow(() -> {
+            throw new NotFoundException();
+        })));
+
+        beerRepository.deleteById(beerId);
+
+        return beerDTO;
     }
 }
