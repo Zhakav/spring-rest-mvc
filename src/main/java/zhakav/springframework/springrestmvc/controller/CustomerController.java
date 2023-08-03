@@ -52,14 +52,14 @@ public class CustomerController {
     }
 
     @PutMapping(PATH_ID)
-    private ResponseEntity<CustomerDTO> updateById(
+    public ResponseEntity<CustomerDTO> updateById(
             @PathVariable("customerId") UUID customerId, @RequestBody CustomerDTO customer){
 
         return new ResponseEntity<>(customerService.updateById(customer,customerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
 
     }
     @PatchMapping(PATH_ID)
-    private ResponseEntity<CustomerDTO> patchById(
+    public ResponseEntity<CustomerDTO> patchById(
             @PathVariable("customerId") UUID customerId, @RequestBody CustomerDTO customer){
 
         return new ResponseEntity<>(customerService.patchById(customer,customerId).orElseThrow(NotFoundException::new),HttpStatus.ACCEPTED);
