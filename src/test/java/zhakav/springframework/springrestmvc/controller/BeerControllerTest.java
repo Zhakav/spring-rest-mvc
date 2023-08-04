@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
@@ -140,6 +141,21 @@ class BeerControllerTest {
                 .andExpect(header().exists("Location"))
                 .andExpect(header().string("Location",is("/api/v1/beer/"+beers.get(1).getId())))
                 .andExpect(jsonPath("$.id",is(beers.get(1).getId().toString())));
+
+    }
+
+    @Test
+    void createNewBeerNullName() throws Exception {
+
+        BeerDTO newBeer=BeerDTO.builder().build();
+
+        given(beerService.save(any(BeerDTO.class))).willReturn(beers.get(0));
+
+        mockMvc.perform(post(BeerController.PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(newBeer)))
+                .andExpect(status().isBadRequest());
 
     }
 

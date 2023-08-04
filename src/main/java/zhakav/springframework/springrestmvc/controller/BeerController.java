@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +39,7 @@ public class BeerController {
 
     }
     @PostMapping(PATH)
-    public ResponseEntity<BeerDTO> save(@RequestBody BeerDTO beer){
+    public ResponseEntity<BeerDTO> save(@Valid @RequestBody BeerDTO beer){
 
         BeerDTO savedBeer=beerService.save(beer);
 
