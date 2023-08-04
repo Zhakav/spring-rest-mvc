@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import zhakav.springframework.springrestmvc.entity.Beer;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @SpringBootTest
 class BeerControllerIT {
 
@@ -89,11 +92,15 @@ class BeerControllerIT {
                         "555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555")
                 .build();
 
-        mockMvc.perform(patch(BeerController.PATH_ID,beer.getId())
+        MvcResult result=mockMvc.perform(patch(BeerController.PATH_ID,beer.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestBody)))
-                .andExpect(status().isBadRequest());
+                .andExpect(jsonPath("$.length()",is(1)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        log.debug("ERROR BODY :");
+        log.debug(result.getResponse().getContentAsString());
     }
 
     @Test
