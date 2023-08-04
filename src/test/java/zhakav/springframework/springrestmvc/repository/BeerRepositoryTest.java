@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.repository;
 
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -32,6 +33,22 @@ class BeerRepositoryTest {
 
         assertThat(beer).isNotNull();
         assertThat(beer.getId()).isNotNull();
+    }
+
+    @Test
+    public void saveInvalidCustomerTest(){
+        assertThrows(ConstraintViolationException.class,()->{
+
+            Beer beer= beerRepository.save(Beer.builder()
+                    .beerName("Golden Lion")
+                    .upc("654454554554")
+                    .quantityOnHand(50)
+                    .build());
+
+            beerRepository.flush();
+
+        });
+
     }
 
 }
