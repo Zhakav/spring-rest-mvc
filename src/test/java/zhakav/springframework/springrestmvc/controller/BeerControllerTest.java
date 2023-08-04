@@ -1,6 +1,7 @@
 package zhakav.springframework.springrestmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.service.BeerService;
@@ -26,6 +28,7 @@ import java.util.*;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@Slf4j
 @WebMvcTest(BeerController.class)
 class BeerControllerTest {
 
@@ -151,12 +154,14 @@ class BeerControllerTest {
 
         given(beerService.save(any(BeerDTO.class))).willReturn(beers.get(0));
 
-        mockMvc.perform(post(BeerController.PATH)
+        MvcResult mvcResult=mockMvc.perform(post(BeerController.PATH)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newBeer)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()).andReturn();
 
+        log.debug("VALIDATION EXCEPTION : ");
+        log.debug(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
