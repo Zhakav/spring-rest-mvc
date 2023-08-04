@@ -51,4 +51,21 @@ class BeerRepositoryTest {
 
     }
 
+    @Test
+    public void saveToLongCustomerTest(){
+        assertThrows(ConstraintViolationException.class,()->{
+
+            Beer beer= beerRepository.save(Beer.builder()
+                    .beerName("Golden Lion 00000000000000000000000000000000000000000000000000000000000000000000000000000")
+                    .beerStyle(BeerStyle.PALE_ALE)
+                    .upc("654454554554")
+                    .quantityOnHand(50)
+                    .build());
+
+            beerRepository.flush();
+
+        });
+
+    }
+
 }
