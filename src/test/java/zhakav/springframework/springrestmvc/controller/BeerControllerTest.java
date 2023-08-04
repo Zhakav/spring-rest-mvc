@@ -150,7 +150,12 @@ class BeerControllerTest {
     @Test
     void createNewBeerNullName() throws Exception {
 
-        BeerDTO newBeer=BeerDTO.builder().build();
+        BeerDTO newBeer=BeerDTO.builder()
+                .upc("Some UPC")
+                .price(BigDecimal.valueOf(20))
+                .beerStyle(BeerStyle.GOSE)
+                .quantityOnHand(0)
+                .build();
 
         given(beerService.save(any(BeerDTO.class))).willReturn(beers.get(0));
 
