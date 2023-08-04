@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
@@ -29,12 +30,15 @@ public class Beer {
     private Integer version;
     @NotNull
     @NotBlank
+    @Size(max = 50)
+    @Column(length = 50)
     private String beerName;
 
     @NotNull
     private BeerStyle beerStyle;
     @NotNull
     @NotBlank
+    @Size(max = 255)
     private String upc;
     @NotNull
     @Min(0)
