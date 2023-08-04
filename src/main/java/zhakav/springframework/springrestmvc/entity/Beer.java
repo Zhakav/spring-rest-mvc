@@ -24,7 +24,7 @@ import java.util.UUID;
 public class Beer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JdbcTypeCode(SqlTypes.CHAR) 
+    @JdbcTypeCode(SqlTypes.CHAR)
     @Column(name = "beer_id" , length =36 ,
             columnDefinition = "varchar(36)" ,
             nullable = false ,updatable = false)
