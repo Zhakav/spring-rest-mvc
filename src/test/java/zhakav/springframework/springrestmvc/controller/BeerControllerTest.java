@@ -158,6 +158,7 @@ class BeerControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newBeer)))
+                .andExpect(jsonPath("$.length()",is(2)))
                 .andExpect(status().isBadRequest()).andReturn();
 
         log.debug("VALIDATION EXCEPTION : ");
