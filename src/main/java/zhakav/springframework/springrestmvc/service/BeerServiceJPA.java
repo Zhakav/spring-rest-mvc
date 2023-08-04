@@ -3,6 +3,7 @@ package zhakav.springframework.springrestmvc.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.mapper.BeerMapper;
@@ -64,15 +65,44 @@ public class BeerServiceJPA implements BeerService {
          atomicReference.set(Optional.of(beerMapper.beerToBeerDTO(beerRepository.save(foundBeer))));
         },()->{
             throw new NotFoundException();
-            //atomicReference.set(Optional.empty());
         });
 
-        return Optional.ofNullable(beerMapper.beerToBeerDTO(beerRepository.findById(id).get()));
+        return Optional.ofNullable(
+                beerMapper.beerToBeerDTO(
+                        beerRepository.findById(id).get()));
     }
 
     @Override
     public Optional<BeerDTO> patchById(BeerDTO beer, UUID id) {
-        return Optional.empty();
+
+        AtomicReference<Optional<BeerDTO>> atomicReference= new AtomicReference<>();
+
+        beerRepository.findById(id).ifPresentOrElse(foundBeer->{
+
+            if(beer.getBeerName()!=null)
+                foundBeer.setBeerName(beer.getBeerName());
+            if(beer.getBeerStyle()!=null)
+                foundBeer.setBeerStyle(beer.getBeerStyle());
+            if(beer.getPrice()!=null)
+                foundBeer.setPrice(beer.getPrice());
+            if(StringUtils.hasText(beer.getUpc()))
+                foundBeer.setUpc(beer.getUpc());
+            if(beer.getQuantityOnHand()!=null)
+                foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+
+            atomicReference.set(Optional.of(
+                    beerMapper.beerToBeerDTO(
+                            beerRepository.save(foundBeer))));
+
+        },()->{
+
+            throw new NotFoundException();
+
+        });
+
+        return Optional.ofNullable(
+                beerMapper.beerToBeerDTO(
+                        beerRepository.findById(id).get()));
     }
 
     @Override
