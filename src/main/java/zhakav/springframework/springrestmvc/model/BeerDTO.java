@@ -18,20 +18,18 @@ public class BeerDTO {
     private Integer version;
     @NotNull
     @NotBlank
+    @Max(50)
     private String beerName;
 
     @NotNull
-    @NotBlank
     private BeerStyle beerStyle;
     @NotNull
     @NotBlank
     private String upc;
     @NotNull
-    @NotBlank
     @Min(0)
     private Integer quantityOnHand;
     @NotNull
-    @NotBlank
     @Min(0)
     private BigDecimal price;
     private LocalDateTime createdDate;
