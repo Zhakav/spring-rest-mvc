@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import zhakav.springframework.springrestmvc.model.BeerStyle;
 
 import java.math.BigDecimal;
@@ -22,8 +24,9 @@ import java.util.UUID;
 public class Beer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JdbcTypeCode(SqlTypes.CHAR) 
     @Column(name = "beer_id" , length =36 ,
-            columnDefinition = "varchar" ,
+            columnDefinition = "varchar(36)" ,
             nullable = false ,updatable = false)
     private UUID id;
     @Version
