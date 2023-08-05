@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +39,7 @@ public class CustomerController {
     }
 
     @PostMapping(PATH)
-    public ResponseEntity<CustomerDTO> save(@RequestBody CustomerDTO customer){
+    public ResponseEntity<CustomerDTO> save(@Valid @RequestBody CustomerDTO customer){
 
         CustomerDTO savedCustomer=customerService.save(customer);
 

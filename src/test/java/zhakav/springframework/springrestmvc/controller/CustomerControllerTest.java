@@ -1,6 +1,7 @@
 package zhakav.springframework.springrestmvc.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import zhakav.springframework.springrestmvc.model.BeerDTO;
+import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.model.CustomerDTO;
 import zhakav.springframework.springrestmvc.service.CustomerService;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -22,6 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+@Slf4j
 @WebMvcTest(CustomerController.class)
 class CustomerControllerTest {
 
@@ -132,6 +138,24 @@ class CustomerControllerTest {
                 .andExpect(jsonPath("$.id",is(customer.getId().toString())));
 
         verify(customerService).updateById(eq(customer),eq(customer.getId()));
+    }
+    @Test
+    void createNewCustomerNullName() throws Exception {
+
+        CustomerDTO customerDTO=CustomerDTO.builder()
+                .build();
+
+        given(customerService.save(any(CustomerDTO.class))).willReturn(customers.get(0));
+
+        MvcResult mvcResult=mockMvc.perform(post(CustomerController.PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(customerDTO)))
+                .andExpect(jsonPath("$.length()",is(2)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        log.debug("VALIDATION EXCEPTION : ");
+        log.debug(mvcResult.getResponse().getContentAsString());
     }
     @Test
     void deleteCustomer() throws Exception{

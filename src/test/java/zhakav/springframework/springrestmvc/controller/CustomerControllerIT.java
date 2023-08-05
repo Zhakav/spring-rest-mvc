@@ -136,7 +136,7 @@ class CustomerControllerIT {
     }
 
     @Test
-    public void listBeers(){
+    public void listCustomer(){
 
         List<CustomerDTO> listOfCustomer= customerController.getAll();
 
@@ -147,7 +147,7 @@ class CustomerControllerIT {
     @Test
     @Rollback
     @Transactional
-    public void emptyListBeers(){
+    public void emptyListCustomers(){
 
         customerRepository.deleteAll();
         List<CustomerDTO> listOfCustomers= customerController.getAll();
