@@ -63,8 +63,6 @@ public class BootstrapData implements CommandLineRunner {
                                 .price(BigDecimal.TEN)
                                 .quantityOnHand(beerCSVRecord.getCount())
                                 .upc(beerCSVRecord.getRow().toString())
-                                .createdDate(LocalDateTime.now())
-                                .updateDate(LocalDateTime.now())
                         .build());
             });
         }
@@ -78,8 +76,6 @@ public class BootstrapData implements CommandLineRunner {
                     .upc("12356")
                     .price(new BigDecimal("12.99"))
                     .quantityOnHand(122)
-                    .createdDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             Beer beer2 = Beer.builder()
@@ -88,8 +84,6 @@ public class BootstrapData implements CommandLineRunner {
                     .upc("12356222")
                     .price(new BigDecimal("11.99"))
                     .quantityOnHand(392)
-                    .createdDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             Beer beer3 = Beer.builder()
@@ -98,8 +92,6 @@ public class BootstrapData implements CommandLineRunner {
                     .upc("12356")
                     .price(new BigDecimal("13.99"))
                     .quantityOnHand(144)
-                    .createdDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             beerRepository.save(beer1);
@@ -116,24 +108,18 @@ public class BootstrapData implements CommandLineRunner {
                     .id(UUID.randomUUID())
                     .name("Customer 1")
                     .version(1)
-                    .createDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             Customer customer2 = Customer.builder()
                     .id(UUID.randomUUID())
                     .name("Customer 2")
                     .version(1)
-                    .createDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             Customer customer3 = Customer.builder()
                     .id(UUID.randomUUID())
                     .name("Customer 3")
                     .version(1)
-                    .createDate(LocalDateTime.now())
-                    .updateDate(LocalDateTime.now())
                     .build();
 
             customerRepository.saveAll(Arrays.asList(customer1, customer2, customer3));
