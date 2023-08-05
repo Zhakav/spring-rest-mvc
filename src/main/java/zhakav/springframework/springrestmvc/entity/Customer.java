@@ -1,6 +1,9 @@
 package zhakav.springframework.springrestmvc.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,10 @@ public class Customer {
             columnDefinition = "varchar" ,
             nullable = false ,updatable = false)
     private UUID id;
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    @Column(length = 50)
     private String name;
     @Version
     private int version;
