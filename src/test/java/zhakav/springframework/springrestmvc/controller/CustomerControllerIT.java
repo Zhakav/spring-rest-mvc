@@ -1,12 +1,20 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.entity.Customer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
@@ -19,8 +27,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Slf4j
 @SpringBootTest
 class CustomerControllerIT {
 
@@ -32,6 +45,18 @@ class CustomerControllerIT {
 
     @Autowired
     CustomerMapper customerMapper;
+
+    @Autowired
+    ObjectMapper objectMapper;
+
+    @Autowired
+    WebApplicationContext wac;
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc= MockMvcBuilders.webAppContextSetup(wac).build();
+    }
 
     @Test
     @Rollback
@@ -59,6 +84,29 @@ class CustomerControllerIT {
 
         });
 
+    }
+
+    @Test
+    void patchBeerInvalidName() throws Exception{
+
+        CustomerDTO customerDTO = customerMapper.customerToCustomerDTO(customerRepository.findAll().get(1));
+
+        CustomerDTO requestBody= CustomerDTO.builder()
+                .name("New Name555555555555555" +
+                        "5555555555555555555555555555555555" +
+                        "5555555555555555555555555555555555555" +
+                        "555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555555")
+                .build();
+
+        MvcResult result=mockMvc.perform(patch(CustomerController.PATH_ID,customerDTO.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestBody)))
+                .andExpect(jsonPath("$.length()",is(1)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        log.debug("ERROR BODY :");
+        log.debug(result.getResponse().getContentAsString());
     }
 
     @Test
