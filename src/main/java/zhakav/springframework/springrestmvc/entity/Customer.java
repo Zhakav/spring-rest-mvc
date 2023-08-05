@@ -32,6 +32,8 @@ public class Customer {
     @Size(max = 50)
     @Column(length = 50)
     private String name;
+    @Column(length = 255)
+    private String email;
     @Version
     private int version;
     private LocalDateTime createDate;
