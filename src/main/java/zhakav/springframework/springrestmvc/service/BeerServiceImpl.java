@@ -116,7 +116,6 @@ public class BeerServiceImpl implements BeerService {
 //        if(beer.getQuantityOnHand()!=null)
             exist.setQuantityOnHand(beer.getQuantityOnHand());
 
-        exist.setUpdateDate(LocalDateTime.now());
 
         beerMap.put(id,exist);
 
@@ -137,8 +136,6 @@ public class BeerServiceImpl implements BeerService {
             exist.setUpc(beer.getUpc());
         if(beer.getQuantityOnHand()!=null)
             exist.setQuantityOnHand(beer.getQuantityOnHand());
-
-        exist.setUpdateDate(LocalDateTime.now());
 
         beerMap.put(id,exist);
 

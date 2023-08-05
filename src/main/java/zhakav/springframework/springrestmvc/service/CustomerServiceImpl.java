@@ -89,8 +89,6 @@ public class CustomerServiceImpl implements CustomerService {
         //if(customer.getName()!=null)
             exist.setName(customer.getName());
 
-        exist.setUpdateDate(LocalDateTime.now());
-
         customerMap.put(id,exist);
 
         return Optional.of(exist);
@@ -102,8 +100,6 @@ public class CustomerServiceImpl implements CustomerService {
 
         if(customer.getName()!=null)
             exist.setName(customer.getName());
-
-        exist.setUpdateDate(LocalDateTime.now());
 
         customerMap.put(id,exist);
 
