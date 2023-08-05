@@ -18,7 +18,6 @@ public class BeerDTO {
     private Integer version;
     @NotNull
     @NotBlank
-    @Max(50)
     private String beerName;
 
     @NotNull

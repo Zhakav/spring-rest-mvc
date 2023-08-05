@@ -3,6 +3,7 @@ package zhakav.springframework.springrestmvc.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.mapper.CustomerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
@@ -68,7 +69,27 @@ public class CustomerServiceJPA implements CustomerService {
 
     @Override
     public Optional<CustomerDTO> patchById(CustomerDTO customer, UUID id) {
-        return Optional.empty();
+
+        AtomicReference<Optional<CustomerDTO>> atomicReference= new AtomicReference<>();
+
+        customerRepository.findById(id).ifPresentOrElse(customerFound->{
+
+            if(customer.getName()!=null)
+                customerFound.setName(customer.getName());
+
+            atomicReference.set(Optional.of(
+                    customerMapper.customerToCustomerDTO(
+                            customerRepository.save(customerFound))));
+
+        },()->{
+
+            throw new NotFoundException();
+
+        });
+
+        return Optional.ofNullable(
+                customerMapper.customerToCustomerDTO(
+                        customerRepository.findById(id).get()));
     }
 
     @Override
