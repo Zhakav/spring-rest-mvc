@@ -26,6 +26,7 @@ import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.mapper.BeerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
+import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
 import java.util.List;
@@ -89,6 +90,16 @@ class BeerControllerIT {
                 .queryParam("beerName","IPA"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()",is(336)));
+
+    }
+
+    @Test
+    void getAllBeersByBeerStyle() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
+                        .queryParam("beerStyle", BeerStyle.IPA.name()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(548)));
 
     }
 
