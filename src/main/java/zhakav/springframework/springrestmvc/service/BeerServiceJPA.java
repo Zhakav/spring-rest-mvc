@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.mapper.BeerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,10 +26,29 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public List<BeerDTO> getAll(String beerName) {
-        return beerRepository.findAll()
+
+        List<Beer> beerList;
+
+        if (StringUtils.hasText(beerName)){
+
+            beerList=getByBeerName(beerName);
+
+        } else {
+
+            beerList=beerRepository.findAll();
+
+        }
+
+        return beerList
                 .stream()
                 .map(beerMapper::beerToBeerDTO)
                 .collect(Collectors.toList());
+    }
+
+    List<Beer> getByBeerName(String beerName){
+
+        return new ArrayList<>();
+
     }
 
     @Override
