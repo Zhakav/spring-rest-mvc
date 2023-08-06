@@ -27,7 +27,7 @@ public class BeerController {
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
 
-        return beerService.getAll();
+        return beerService.getAll(beerName);
 
     }
     @GetMapping(PATH_ID)
