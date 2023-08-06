@@ -88,7 +88,7 @@ class BeerControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
                 .queryParam("beerName","IPA"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()",is(100)));
+                .andExpect(jsonPath("$.length()",is(336)));
 
     }
 
