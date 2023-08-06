@@ -82,6 +82,7 @@ class BeerControllerIT {
 
     }
 
+    @Test
     void getAllBeersByName() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
@@ -202,7 +203,7 @@ class BeerControllerIT {
     @Test
     public void listBeers(){
 
-        List<BeerDTO> listOfBeers=beerController.getAll();
+        List<BeerDTO> listOfBeers=beerController.getAll(null);
 
         assertThat(listOfBeers.size()).isEqualTo(2413);
 
@@ -214,7 +215,7 @@ class BeerControllerIT {
     public void emptyListBeers(){
 
         beerRepository.deleteAll();
-        List<BeerDTO> listOfBeers=beerController.getAll();
+        List<BeerDTO> listOfBeers=beerController.getAll(null);
 
         assertThat(listOfBeers.size()).isEqualTo(0);
 
