@@ -3,6 +3,7 @@ package zhakav.springframework.springrestmvc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+//--spring.profiles.active=localpostgresql
 @SpringBootApplication
 public class SpringRestMvcApplication {
 

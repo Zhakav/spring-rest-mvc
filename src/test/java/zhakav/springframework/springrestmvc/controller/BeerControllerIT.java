@@ -1,5 +1,6 @@
 package zhakav.springframework.springrestmvc.controller;
 
+import static org.apache.tomcat.InstanceManagerBindings.get;
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +19,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import zhakav.springframework.springrestmvc.entity.Beer;
@@ -77,6 +79,15 @@ class BeerControllerIT {
         assertThat(((BeerDTO)response.getBody()).getId()).isEqualTo(beer.getId());
         assertThat(((BeerDTO)response.getBody()).getBeerName()).isEqualTo(beer.getBeerName());
         assertThat(beerRepository.findById(beer.getId())).isEmpty();
+
+    }
+
+    void getAllBeersByName() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
+                .queryParam("beerName","IPA"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(100)));
 
     }
 
