@@ -63,7 +63,7 @@ public class BeerServiceImpl implements BeerService {
 
     }
     @Override
-    public List<BeerDTO> getAll(String beerName){
+    public List<BeerDTO> getAll(String beerName, BeerStyle beerStyle){
 
         log.debug("GET ALL BEERS -IN BEER SERVICE ");
 

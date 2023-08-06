@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
+import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.service.BeerService;
 
 import java.util.List;
@@ -23,11 +24,12 @@ public class BeerController {
     public static final String PATH= "/api/v1/beer";
     public static final String PATH_ID= PATH + "/{beerId}";
     @GetMapping(PATH)
-    public List<BeerDTO> getAll(@RequestParam(required = false) String beerName){
+    public List<BeerDTO> getAll(@RequestParam(required = false) String beerName ,
+                                @RequestParam(required = false) BeerStyle beerStyle){
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
 
-        return beerService.getAll(beerName);
+        return beerService.getAll(beerName,beerStyle);
 
     }
     @GetMapping(PATH_ID)

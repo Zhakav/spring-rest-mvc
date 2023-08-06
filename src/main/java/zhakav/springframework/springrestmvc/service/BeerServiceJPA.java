@@ -8,9 +8,9 @@ import zhakav.springframework.springrestmvc.entity.Beer;
 import zhakav.springframework.springrestmvc.exception.NotFoundException;
 import zhakav.springframework.springrestmvc.mapper.BeerMapper;
 import zhakav.springframework.springrestmvc.model.BeerDTO;
+import zhakav.springframework.springrestmvc.model.BeerStyle;
 import zhakav.springframework.springrestmvc.repository.BeerRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,13 +25,17 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDTO> getAll(String beerName) {
+    public List<BeerDTO> getAll(String beerName, BeerStyle beerStyle) {
 
         List<Beer> beerList;
 
         if (StringUtils.hasText(beerName)){
 
             beerList=getByBeerName(beerName);
+
+        } else if (!StringUtils.hasText(beerName) && beerStyle!=null) {
+
+            beerList=getByBeerStyle(beerStyle);
 
         } else {
 
@@ -48,6 +52,11 @@ public class BeerServiceJPA implements BeerService {
     List<Beer> getByBeerName(String beerName){
 
         return beerRepository.findAllByBeerNameIsLikeIgnoreCase("%"+beerName+"%");
+
+    }
+    List<Beer> getByBeerStyle(BeerStyle beerStyle){
+
+        return beerRepository.findAllByBeerStyle(beerStyle);
 
     }
 

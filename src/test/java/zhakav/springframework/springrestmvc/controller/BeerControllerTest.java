@@ -114,7 +114,7 @@ class BeerControllerTest {
     @Test
     void getAll() throws Exception{
 
-        given(beerService.getAll(null)).willReturn(beers);
+        given(beerService.getAll(null, null)).willReturn(beers);
 
         mockMvc.perform(get(BeerController.PATH)
                 .accept(MediaType.APPLICATION_JSON))
