@@ -29,13 +29,17 @@ public class BeerServiceJPA implements BeerService {
 
         List<Beer> beerList;
 
-        if (StringUtils.hasText(beerName)){
+        if (StringUtils.hasText(beerName) && beerStyle==null){
 
             beerList=getByBeerName(beerName);
 
         } else if (!StringUtils.hasText(beerName) && beerStyle!=null) {
 
             beerList=getByBeerStyle(beerStyle);
+
+        } else if (StringUtils.hasText(beerName) && beerStyle!=null) {
+
+            beerList=getByNameAndStyle(beerName,beerStyle);
 
         } else {
 
@@ -64,6 +68,12 @@ public class BeerServiceJPA implements BeerService {
     List<Beer> getByBeerStyle(BeerStyle beerStyle){
 
         return beerRepository.findAllByBeerStyle(beerStyle);
+
+    }
+
+    List<Beer> getByNameAndStyle(String beerName,BeerStyle beerStyle){
+
+        return beerRepository.findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle("%"+beerName+"%",beerStyle);
 
     }
 
