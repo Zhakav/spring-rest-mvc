@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.hamcrest.core.IsNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,41 @@ class BeerControllerIT {
 
     }
 
+    @Test
+    void getAllBeersByNameAndStyle() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
+                        .queryParam("beerName","IPA")
+                        .queryParam("beerStyle",BeerStyle.IPA.name()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(310)));
+
+    }
+
+    @Test
+    void getAllBeersByNameAndStyleShowInventoryFalse() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
+                        .queryParam("beerName","IPA")
+                        .queryParam("beerStyle",BeerStyle.IPA.name())
+                        .queryParam("showInventory","false"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(310)))
+                .andExpect(jsonPath("$.[0].quantityOnHand").value(IsNull.nullValue()));
+
+    }
+    @Test
+    void getAllBeersByNameAndStyleShowInventoryTrue() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BeerController.PATH)
+                        .queryParam("beerName","IPA")
+                        .queryParam("beerStyle",BeerStyle.IPA.name())
+                        .queryParam("showInventory","true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()",is(310)))
+                .andExpect(jsonPath("$.[0].quantityOnHand").value(IsNull.notNullValue()));
+
+    }
     @Test
     void patchBeerInvalidName() throws Exception{
 
