@@ -25,11 +25,12 @@ public class BeerController {
     public static final String PATH_ID= PATH + "/{beerId}";
     @GetMapping(PATH)
     public List<BeerDTO> getAll(@RequestParam(required = false) String beerName ,
-                                @RequestParam(required = false) BeerStyle beerStyle){
+                                @RequestParam(required = false) BeerStyle beerStyle,
+                                @RequestParam(required = false) boolean showInventory){
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
 
-        return beerService.getAll(beerName,beerStyle);
+        return beerService.getAll(beerName,beerStyle,showInventory);
 
     }
     @GetMapping(PATH_ID)

@@ -25,7 +25,7 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDTO> getAll(String beerName, BeerStyle beerStyle) {
+    public List<BeerDTO> getAll(String beerName, BeerStyle beerStyle, boolean showInventory) {
 
         List<Beer> beerList;
 
@@ -41,6 +41,13 @@ public class BeerServiceJPA implements BeerService {
 
             beerList=beerRepository.findAll();
 
+        }
+
+        if(!showInventory){
+
+            beerList.forEach(beer->{
+                beer.setQuantityOnHand(null);
+            });
         }
 
         return beerList
