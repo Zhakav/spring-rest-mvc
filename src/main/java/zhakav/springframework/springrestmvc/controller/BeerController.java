@@ -26,11 +26,13 @@ public class BeerController {
     @GetMapping(PATH)
     public List<BeerDTO> getAll(@RequestParam(required = false) String beerName ,
                                 @RequestParam(required = false) BeerStyle beerStyle,
-                                @RequestParam(required = false) boolean showInventory){
+                                @RequestParam(required = false) boolean showInventory,
+                                @RequestParam(required = false)int pageNumber,
+                                @RequestParam(required = false)int pageSize){
 
         log.debug("GET ALL BEERS -IN BEER CONTROLLER ");
 
-        return beerService.getAll(beerName,beerStyle,showInventory);
+        return beerService.getAll(beerName,beerStyle,showInventory, pageNumber, pageSize);
 
     }
     @GetMapping(PATH_ID)
